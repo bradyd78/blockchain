@@ -1,0 +1,79 @@
+Step 3: Interacting with our Blockchain
+You can use plain old cURL or Postman to interact with our API over a network.
+
+Fire up the server:
+
+$ python blockchain.py
+* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+Let’s try mining a block by making a
+GET
+request to
+http://localhost:5000/mine
+:
+
+
+
+image
+
+(Using Postman to make a GET request)
+
+Let’s create a new transaction by making a
+POST
+request to
+http://localhost:5000/transactions/new
+with a body containing our transaction structure:
+
+
+
+image
+
+(Using Postman to make a POST request)
+
+If you aren’t using Postman, then you can make the equivalent request using cURL:
+
+$ curl -X POST -H "Content-Type: application/json" -d '{
+ "sender": "d4ee26eee15148ee92c6cd394edd974e",
+ "recipient": "someone-other-address",
+ "amount": 5
+}' "http://localhost:5000/transactions/new"
+I restarted my server, and mined two blocks, to give 3 in total. Let’s inspect the full chain by requesting
+http://localhost:5000/chain
+
+{
+  "chain": [
+    {
+      "index": 1,
+      "previous_hash": 1,
+      "proof": 100,
+      "timestamp": 1506280650.770839,
+      "transactions": []
+    },
+    {
+      "index": 2,
+      "previous_hash": "c099bc...bfb7",
+      "proof": 35293,
+      "timestamp": 1506280664.717925,
+      "transactions": [
+        {
+          "amount": 1,
+          "recipient": "8bbcb347e0634905b0cac7955bae152b",
+          "sender": "0"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "previous_hash": "eff91a...10f2",
+      "proof": 35089,
+      "timestamp": 1506280666.1086972,
+      "transactions": [
+        {
+          "amount": 1,
+          "recipient": "8bbcb347e0634905b0cac7955bae152b",
+          "sender": "0"
+        }
+      ]
+    }
+  ],
+  "length": 3
+}
